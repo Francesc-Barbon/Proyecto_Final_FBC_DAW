@@ -19,7 +19,7 @@ Route::get('/', function () {
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [UserController::class, 'dashboard'])->name('user.dashboard');
-    Route::resource('/usuarios', UserController::class)->except(['show'])->names('users');
+    Route::resource('users', UserController::class)->except(['show']);
 });
 
 //Rutas a los controladores

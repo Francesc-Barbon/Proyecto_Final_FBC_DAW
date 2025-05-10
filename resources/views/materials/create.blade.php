@@ -1,11 +1,6 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Crear Material</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body class="p-5">
-<div class="container">
+@extends('layouts.app')
+
+@section('content')
 
     <h1>Crear Nuevo Material</h1>
 
@@ -29,5 +24,5 @@
     <a href="{{ route('materials.index') }}" class="btn btn-primary mt-3">Volver a la lista de Materiales</a>
 </div>
 </body>
-</html>
+@endsection
 

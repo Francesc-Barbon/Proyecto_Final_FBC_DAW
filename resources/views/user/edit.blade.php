@@ -4,7 +4,7 @@
     <div class="container">
         <h1 class="mb-4">Editar Usuario</h1>
 
-        <form action="{{ route('users.update', $user) }}" method="POST">
+        <form action="{{ route('users.update', ['user' => $user->id]) }}" method="POST">
             @csrf
             @method('PUT')
 
