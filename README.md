@@ -1,3 +1,4 @@
+
 Sistema de Gestion de Stock y Trabajos para Empresa de Electricidad
 ===================================================================
 
@@ -50,3 +51,4 @@ El sistema contará con las siguientes entidades principales:
 4.  **Movimientos de Stock**: Control del ingreso y salida de materiales.
 
 ![Diagrama ER](https://github.com/Francesc-Barbon/Proyecto_Final_FBC_DAW/blob/main/imagenes/modelo_ER.png?raw=true)
+
