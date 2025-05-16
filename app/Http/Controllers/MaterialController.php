@@ -35,12 +35,14 @@ class MaterialController extends Controller
             'name' => 'required',
             'description' => 'required',
             'quantity' => 'required|integer|min:1',
+            'material_code' => 'required|string|max:50|unique:materials,material_code',
         ]);
 
         $material = Material::create([
             'name' => $request->name,
             'description' => $request->description,
             'quantity' => $request->quantity,
+            'material_code' => $request->material_code,
         ]);
 
         // Crear un movimiento de stock cuando se añade un material

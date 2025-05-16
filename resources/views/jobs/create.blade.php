@@ -17,8 +17,12 @@
             </div>
 
             <div class="mb-3">
-                <label>Fecha de fin</label>
-                <input type="date" name="end_date" class="form-control">
+                <label>Asignar Usuario</label>
+                <select name="user_id" class="form-control" required>
+                    @foreach ($users as $user)
+                        <option value="{{ $user->id }}">{{ $user->name }}</option>
+                    @endforeach
+                </select>
             </div>
 
             <button class="btn btn-primary">Guardar</button>

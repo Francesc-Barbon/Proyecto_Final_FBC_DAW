@@ -35,9 +35,6 @@
 
                 @if ($user->role === 'admin')
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('jobs.index') }}">Trabajos</a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" href="{{ route('users.index') }}">Usuarios</a>
                     </li>
                     <li class="nav-item">
@@ -47,6 +44,9 @@
                         <a class="nav-link" href="{{ route('materials.index') }}">Materiales</a>
                     </li>
                 @endif
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('jobs.index') }}">Trabajos</a>
+                    </li>
 
             </ul>
             <form class="d-flex" method="POST" action="{{ route('logout') }}">

@@ -41,6 +41,38 @@
                 </tbody>
             </table>
         @endif
+        @if(session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @if(session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
+        <h3>Agregar Material al Trabajo</h3>
+        <form action="{{ route('jobs.addMaterial', $job->id) }}" method="POST">
+            @csrf
+            <div class="mb-3">
+                <label for="material_id" class="form-label">Seleccionar Material</label>
+                <select class="form-control" id="material_id" name="material_id" required>
+                    @foreach($materials as $material)
+                        <option value="{{ $material->id }}" data-quantity="{{ $material->quantity }}">
+                            {{ $material->name }} - {{ $material->quantity }} disponible
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="quantity" class="form-label">Cantidad a Asignar</label>
+                <input type="number" class="form-control" id="quantity" name="quantity" min="1" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Añadir Material</button>
+        </form>
+
     </div>
 @endsection
-

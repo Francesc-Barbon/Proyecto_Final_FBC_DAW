@@ -13,10 +13,8 @@ class Material extends Model
         'name',
         'description',
         'quantity',
+        'material_code',
     ];
-
-    // Relaciones
-
     public function stockMovements()
     {
         return $this->hasMany(StockMovement::class);

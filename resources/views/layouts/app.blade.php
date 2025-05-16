@@ -73,6 +73,9 @@
                             <a class="nav-link" href="{{ route('materials.index') }}">Materiales</a>
                         </li>
                     @endif
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('jobs.index') }}">Trabajos</a>
+                        </li>
                 @endauth
             </ul>
             @auth

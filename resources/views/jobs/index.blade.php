@@ -3,7 +3,8 @@
 @section('content')
     <div class="container mt-5 pt-5">
         <h1 class="mb-4">Dashboard de Trabajos</h1>
-
+        <!-- Botón para Crear Trabajo -->
+        <a href="{{ route('jobs.create') }}" class="btn btn-success mb-4">Crear Nuevo Trabajo</a>
         <div class="row g-4">
             <!-- Sin Empezar -->
             <div class="col-12 col-md-4">
