@@ -11,7 +11,7 @@
                 <h3>Sin Empezar</h3>
                 <div id="sin_empezar" class="column" data-status="sin_empezar">
                     @foreach ($jobs as $job)
-                        @if($job->status == 'sin_empezar')
+                        @if($job->status == 'sin_empezar' && (!isset($job->is_old) || !$job->is_old))
                             <div class="card" data-id="{{ $job->id }}">
                                 <div class="card-body">
                                     <h5 class="card-title">{{ $job->description }}</h5>
@@ -31,7 +31,7 @@
                 <h3>En Curso</h3>
                 <div id="en_curso" class="column" data-status="en_curso">
                     @foreach ($jobs as $job)
-                        @if($job->status == 'en_curso')
+                        @if($job->status == 'en_curso' && (!isset($job->is_old) || !$job->is_old))
                             <div class="card" data-id="{{ $job->id }}">
                                 <div class="card-body">
                                     <h5 class="card-title">{{ $job->description }}</h5>
@@ -51,7 +51,7 @@
                 <h3>Finalizado</h3>
                 <div id="finalizado" class="column" data-status="finalizado">
                     @foreach ($jobs as $job)
-                        @if($job->status == 'finalizado')
+                        @if($job->status == 'finalizado' && (!isset($job->is_old) || !$job->is_old))
                             <div class="card" data-id="{{ $job->id }}">
                                 <div class="card-body">
                                     <h5 class="card-title">{{ $job->description }}</h5>

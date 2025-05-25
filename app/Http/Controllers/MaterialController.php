@@ -13,7 +13,7 @@ class MaterialController extends Controller
      */
     public function index()
     {
-        $materials = Material::all(); // Obtener todos los materiales
+        $materials = Material::paginate(10); // 10 materiales por página
         return view('materials.index', compact('materials'));
     }
 
@@ -23,7 +23,7 @@ class MaterialController extends Controller
      */
     public function create()
     {
-        return view('materials.create'); // Vista para crear un nuevo material
+        return view('materials.create');
     }
 
     /**

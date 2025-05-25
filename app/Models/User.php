@@ -33,4 +33,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(StockMovement::class);
     }
+
+    public function workHours()
+    {
+        return $this->hasMany(WorkHour::class);
+    }
+
 }

@@ -8,13 +8,28 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Material;
+use App\Models\WorkHour;
+use Carbon\Carbon;
 
 class JobController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+    public function addHours(Request $request, Job $job)
+    {
+        $request->validate([
+            'hours' => 'required|numeric|min:0.1|max:24',
+        ]);
 
+        WorkHour::create([
+            'user_id' => auth()->id(),
+            'job_id' => $job->id,
+            'hours' => $request->hours,
+        ]);
+
+        return back()->with('success', 'Horas registradas correctamente.');
+    }
     public function addMaterial(Request $request, $id)
     {
         // Buscar el trabajo
@@ -52,7 +67,23 @@ class JobController extends Controller
     }
     public function index()
     {
-        $jobs = Job::all(); // Obtener todos los trabajos
+        // Obtener trabajos con estado "finalizado"
+        $jobs = Job::all();  // Aquí obtienes todos los trabajos, pero lo filtras más abajo
+
+        // Filtrar trabajos "finalizados" por más de 2 días
+        $jobs = $jobs->map(function($job) {
+            if ($job->status == 'finalizado') {
+                // Si el trabajo está finalizado y su fecha de finalización es más de 2 días atrás
+                $endDate = Carbon::parse($job->end_date);
+                if ($endDate->diffInDays(Carbon::now()) > 2) {
+                    $job->is_old = true; // Marcamos los trabajos como viejos
+                } else {
+                    $job->is_old = false;
+                }
+            }
+            return $job;
+        });
+
         return view('jobs.index', compact('jobs'));
     }
 
@@ -106,6 +137,8 @@ class JobController extends Controller
 
         // Cargar todos los materiales disponibles
         $materials = Material::all();  // Esto carga todos los materiales
+
+        $job->load('workHours.user'); // cargar también las horas con su usuario
 
         // Pasamos tanto el trabajo como los materiales a la vista
         return view('jobs.show', compact('job', 'stockMovements', 'materials'));

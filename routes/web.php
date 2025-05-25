@@ -28,9 +28,11 @@ Route::resource('materials', MaterialController::class);
 Route::resource('stock-movements', StockMovementController::class);
 Route::get('/stock-movements-log', [StockMovementController::class, 'viewLog'])->name('stock.movements.log');
 Route::post('/jobs/{id}/update-status', [JobController::class, 'updateStatus'])->name('jobs.updateStatus');
-Route::get('/materials/create/{job}', [MaterialController::class, 'create'])->name('materials.create');
+Route::get('/materials/create/{job?}', [MaterialController::class, 'create'])->name('materials.create');
 Route::get('/jobs/{job}/add-material', [JobController::class, 'addMaterial'])->name('jobs.addMaterial');
 Route::post('/jobs/{id}/add-material', [JobController::class, 'addMaterial'])->name('jobs.addMaterial');
+Route::post('/jobs/{job}/add-hours', [JobController::class, 'addHours'])->name('jobs.addHours');
+
 
 
 Route::middleware('auth')->group(function () {
