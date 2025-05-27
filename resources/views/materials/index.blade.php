@@ -20,6 +20,7 @@
             <tr>
                 <th>Nombre</th>
                 <th>Descripción</th>
+                <th>Precio/Unidad (€)</th>
                 <th>Cantidad</th>
                 <th>Acciones</th>
             </tr>
@@ -29,6 +30,7 @@
                 <tr>
                     <td>{{ $material->name }}</td>
                     <td>{{ $material->description }}</td>
+                    <td>{{ number_format($material->unit_price, 2) }} €</td>
                     <td>{{ $material->quantity }}</td>
                     <td class="d-flex gap-2">
                         <a href="{{ route('materials.edit', $material->id) }}" class="btn btn-warning btn-sm">Almacén</a>

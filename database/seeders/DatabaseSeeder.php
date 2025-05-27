@@ -12,7 +12,8 @@ class DatabaseSeeder extends Seeder
             UsersTableSeeder::class,
             JobsTableSeeder::class,
             MaterialsTableSeeder::class,
-            StockMovementsTableSeeder::class
+            StockMovementsTableSeeder::class,
+            CategorySeeder::class
         ]);
     }
 }

@@ -33,4 +33,7 @@ class Job extends Model
     {
         return $this->hasMany(WorkHour::class);
     }
+    public function category() {
+        return $this->belongsTo(Category::class);
+    }
 }

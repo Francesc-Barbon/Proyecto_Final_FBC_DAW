@@ -22,12 +22,19 @@
             </div>
 
             <div class="mb-3">
+                <label for="unit_price" class="form-label">Precio por unidad (€)</label>
+                <input type="number" name="unit_price" class="form-control" step="0.01" min="0" value="{{ old('unit_price', 0) }}">
+            </div>
+
+            <div class="mb-3">
                 <label for="material_code" class="form-label">Código de Material</label>
                 <input type="text" name="material_code" id="material_code" class="form-control @error('material_code') is-invalid @enderror" value="{{ old('material_code') }}" required>
                 @error('material_code')
                 <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
+
+
 
             <button type="submit" class="btn btn-success">Añadir Material</button>
         </form>

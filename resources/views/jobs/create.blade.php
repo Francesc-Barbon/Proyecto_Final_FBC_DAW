@@ -17,6 +17,15 @@
             </div>
 
             <div class="mb-3">
+                <label for="category_id" class="form-label">Categoría</label>
+                <select name="category_id" class="form-control" required>
+                    @foreach ($categories as $category)
+                        <option value="{{ $category->id }}">{{ ucfirst($category->name) }}</option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div class="mb-3">
                 <label>Asignar Usuario</label>
                 <select name="user_id" class="form-control" required>
                     @foreach ($users as $user)

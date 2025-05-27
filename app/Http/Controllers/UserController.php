@@ -8,10 +8,59 @@ use App\Models\User;
 
 class UserController extends Controller
 {
+
     public function dashboard()
     {
-        $user = Auth::user();
-        return view('user.dashboard', compact('user'));
+        $authUser = auth()->user();
+
+        if ($authUser->role === 'admin') {
+            // Usuarios con datos cargados
+            $users = \App\Models\User::with(['workHours', 'stockMovements'])->get();
+
+            $userStats = $users->map(function ($user) {
+                $totalHours = $user->workHours->sum('hours');
+                $totalCost = $totalHours * $user->hourly_rate;
+                $jobCount = $user->workHours->pluck('job_id')->unique()->count();
+                $materialsManaged = $user->stockMovements->sum('quantity');
+
+                return [
+                    'user' => $user,
+                    'totalHours' => $totalHours,
+                    'totalCost' => $totalCost,
+                    'jobCount' => $jobCount,
+                    'materialsManaged' => $materialsManaged,
+                ];
+            });
+
+            // Totales globales
+            $totalLaborCost = $userStats->sum('totalCost');
+
+            $totalMaterialCost = \App\Models\StockMovement::with('material')
+                ->get()
+                ->sum(function ($movement) {
+                    return $movement->quantity * $movement->material->unit_price;
+                });
+
+            $totalCompanyCost = $totalLaborCost + $totalMaterialCost;
+
+            return view('user.dashboard', compact('userStats', 'totalLaborCost', 'totalMaterialCost', 'totalCompanyCost'));
+        }
+
+        // Usuario normal: solo sus datos
+        $totalHours = $authUser->workHours->sum('hours');
+        $totalCost = $totalHours * $authUser->hourly_rate;
+        $jobCount = $authUser->workHours->pluck('job_id')->unique()->count();
+        $materialsManaged = $authUser->stockMovements->sum('quantity');
+
+        return view('user.dashboard', [
+            'userStats' => collect([[
+                'user' => $authUser,
+                'totalHours' => $totalHours,
+                'totalCost' => $totalCost,
+                'jobCount' => $jobCount,
+                'materialsManaged' => $materialsManaged,
+            ]]),
+        ]);
     }
 
     public function index()
@@ -44,6 +93,7 @@ class UserController extends Controller
             'email' => 'required|unique:users,email',
             'password' => 'required|confirmed',
             'role' => 'required|in:user,admin',
+            'hourly_rate' => 'required|numeric|min:0',
         ]);
 
         User::create([
@@ -51,6 +101,7 @@ class UserController extends Controller
             'email' => $request->email,
             'password' => bcrypt($request->password),
             'role' => $request->role,
+            'hourly_rate' => $request->hourly_rate,
         ]);
 
         return redirect()->route('user.dashboard')->with('success', 'Usuario creado.');

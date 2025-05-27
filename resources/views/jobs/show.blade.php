@@ -13,7 +13,9 @@
                 <p><strong>Responsable:</strong> {{ $job->user->name }}</p>
             </div>
         </div>
-
+        @error('quantity')
+        <div class="alert alert-danger mt-2">{{ $message }}</div>
+        @enderror
         {{-- Pestañas (Tabs) --}}
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item" role="presentation">
@@ -49,6 +51,38 @@
                                 <td>{{ ucfirst($movement->movement_type) }}</td>
                                 <td>{{ $movement->date }}</td>
                                 <td>{{ $movement->user->name }}</td>
+                                <td>
+                                    <!-- Botón para abrir modal -->
+                                    <button type="button" class="btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#editModal-{{ $movement->id }}">
+                                        ✏️ Editar
+                                    </button>
+
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="editModal-{{ $movement->id }}" tabindex="-1" aria-labelledby="editModalLabel-{{ $movement->id }}" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <form action="{{ route('jobs.updateMaterial', ['job' => $job->id, 'movement' => $movement->id]) }}" method="POST">
+                                                    @csrf
+                                                    @method('PUT')
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="editModalLabel-{{ $movement->id }}">Editar Cantidad</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="mb-3">
+                                                            <label for="quantity" class="form-label">Cantidad</label>
+                                                            <input type="number" class="form-control" name="quantity" value="{{ $movement->quantity }}" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="submit" class="btn btn-primary">Guardar</button>
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
                             </tr>
                         @endforeach
                         </tbody>
@@ -99,7 +133,43 @@
                                 <td>{{ $hour->user->name }}</td>
                                 <td>{{ $hour->hours }}</td>
                                 <td>{{ $hour->created_at->format('d/m/Y H:i') }}</td>
+                                <td>
+                                    <!-- Botón para abrir modal -->
+                                    <button type="button" class="btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#editHourModal-{{ $hour->id }}">
+                                        Editar
+                                    </button>
+
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="editHourModal-{{ $hour->id }}" tabindex="-1" aria-labelledby="editHourModalLabel-{{ $hour->id }}" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <form action="{{ route('jobs.updateHour', ['job' => $job->id, 'hour' => $hour->id]) }}" method="POST">
+                                                    @csrf
+                                                    @method('PUT')
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="editHourModalLabel-{{ $hour->id }}">Editar Horas</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="mb-3">
+                                                            <label for="hours" class="form-label">Horas</label>
+                                                            <input type="number" class="form-control" name="hours" step="0.1" min="0.1" max="24" value="{{ $hour->hours }}" required>
+                                                            @error('hours')
+                                                            <div class="alert alert-danger mt-2">{{ $message }}</div>
+                                                            @enderror
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="submit" class="btn btn-primary">Guardar</button>
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
                             </tr>
+
                         @endforeach
                         </tbody>
                     </table>

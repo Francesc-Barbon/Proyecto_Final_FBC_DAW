@@ -14,6 +14,7 @@
                 <th>Nombre</th>
                 <th>Email</th>
                 <th>Rol</th>
+                <th>Precio/Hora (€)</th>
                 <th>Acciones</th>
             </tr>
             </thead>
@@ -23,6 +24,7 @@
                     <td>{{ $user->name }}</td>
                     <td>{{ $user->email }}</td>
                     <td>{{ ucfirst($user->role) }}</td>
+                    <td>{{ number_format($user->hourly_rate, 2) }} €</td>
                     <td>
                         <a href="{{ route('users.edit', $user) }}" class="btn btn-sm btn-warning">Editar</a>
                         <form action="{{ route('users.destroy', $user) }}" method="POST" class="d-inline"

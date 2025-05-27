@@ -32,6 +32,8 @@ Route::get('/materials/create/{job?}', [MaterialController::class, 'create'])->n
 Route::get('/jobs/{job}/add-material', [JobController::class, 'addMaterial'])->name('jobs.addMaterial');
 Route::post('/jobs/{id}/add-material', [JobController::class, 'addMaterial'])->name('jobs.addMaterial');
 Route::post('/jobs/{job}/add-hours', [JobController::class, 'addHours'])->name('jobs.addHours');
+Route::put('/jobs/{job}/materials/{movement}', [JobController::class, 'updateMaterial'])->name('jobs.updateMaterial');
+Route::put('/jobs/{job}/hours/{hour}', [JobController::class, 'updateHour'])->name('jobs.updateHour');
 
 
 

@@ -14,6 +14,7 @@ class Material extends Model
         'description',
         'quantity',
         'material_code',
+        'unit_price',
     ];
     public function stockMovements()
     {

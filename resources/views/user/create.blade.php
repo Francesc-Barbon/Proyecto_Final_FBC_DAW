@@ -35,6 +35,11 @@
                 <input type="password" class="form-control" name="password_confirmation" required>
             </div>
 
+            <div class="mb-3">
+                <label for="hourly_rate" class="form-label">Precio por hora (€)</label>
+                <input type="number" name="hourly_rate" class="form-control" step="0.01" min="0" value="{{ old('hourly_rate', 0) }}">
+            </div>
+
             <button type="submit" class="btn btn-success">Crear</button>
             <a href="{{ route('users.index') }}" class="btn btn-secondary">Cancelar</a>
         </form>

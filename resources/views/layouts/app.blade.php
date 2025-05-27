@@ -61,9 +61,7 @@
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 @auth
                     @if (auth()->user()->role === 'admin')
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('jobs.index') }}">Trabajos</a>
-                        </li>
+
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('users.index') }}">Usuarios</a>
                         </li>
