@@ -3,7 +3,6 @@
 @section('content')
     <div class="container mt-5 pt-5">
         <h1 class="mb-4">Dashboard de Trabajos</h1>
-        <!-- Botón para Crear Trabajo -->
         <a href="{{ route('jobs.create') }}" class="btn btn-success mb-4">Crear Nuevo Trabajo</a>
         <div class="row g-4">
             <!-- Sin Empezar -->
@@ -83,6 +82,7 @@
     </style>
 
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
+    <!-- Script que permite el movimiento dentro del trello de trabajos-->
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             function initSortable() {

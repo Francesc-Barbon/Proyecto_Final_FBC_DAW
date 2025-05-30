@@ -3,7 +3,10 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-
+/*
+ * Vista para mostrar los movimientos de stock
+ * de forma ordenada
+ * */
 class StockMovementView extends Model
 {
     protected $table = 'stock_movements_view';

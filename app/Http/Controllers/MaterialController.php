@@ -9,7 +9,8 @@ use Illuminate\Http\Request;
 class MaterialController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Controlador encargado de gestionar los materiales disponibles en stock.
+     * Permite registrar nuevos materiales, editar su información y controlar su inventario.
      */
     public function index()
     {
@@ -53,7 +54,7 @@ class MaterialController extends Controller
             'quantity' => $material->quantity,
             'movement_type' => 'added', // Tipo de movimiento: añadido
             'date' => now(),
-            'user_id' => auth()->id(), // ID del usuario que lo añadió
+            'user_id' => auth()->id(),
             'job_id' => null, // Si no se asocia a un trabajo, puede ser nulo
         ]);
 
@@ -96,7 +97,7 @@ class MaterialController extends Controller
             return back()->with('error', 'No puedes retirar más material del disponible.');
         }
 
-        // Actualizar cantidad en el material
+
         if ($movementType === 'added') {
             $material->quantity += $quantity;
         } else {
@@ -105,7 +106,7 @@ class MaterialController extends Controller
 
         $material->save();
 
-        // Registrar en stock_movements
+
         StockMovement::create([
             'material_id' => $material->id,
             'quantity' => $quantity,
@@ -124,20 +125,20 @@ class MaterialController extends Controller
      */
     public function destroy($id)
     {
-        // Buscar el material que se va a eliminar
+
         $material = Material::findOrFail($id);
 
         // Registrar un movimiento de stock con el tipo 'deleted'
         StockMovement::create([
             'material_id' => $material->id,
-            'quantity' => $material->quantity, // O puedes registrar la cantidad en 0 si no quieres la cantidad original
+            'quantity' => $material->quantity,
             'movement_type' => 'deleted', // Tipo de movimiento: eliminado
             'date' => now(),
-            'user_id' => auth()->id(), // ID del usuario que está eliminando el material
-            'job_id' => null, // Si no se asocia a un trabajo, puede ser nulo
+            'user_id' => auth()->id(),
+            'job_id' => null,
         ]);
 
-        // Eliminar el material
+
         $material->delete();
 
         return redirect()->route('materials.index')->with('success', 'Material eliminado correctamente y movimiento de stock registrado.');

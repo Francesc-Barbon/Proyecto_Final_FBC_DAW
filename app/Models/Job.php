@@ -17,8 +17,6 @@ class Job extends Model
         'status',
     ];
 
-    // Relaciones
-
     public function user()
     {
         return $this->belongsTo(User::class);

@@ -8,7 +8,10 @@ use App\Models\User;
 
 class UserController extends Controller
 {
-
+    /**
+     * Controlador para la gestión de usuarios del sistema.
+     * Administra el alta, edición y eliminación de trabajadores y administradores.
+     */
     public function dashboard()
     {
         $authUser = auth()->user();

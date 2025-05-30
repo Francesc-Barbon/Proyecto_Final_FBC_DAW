@@ -13,8 +13,10 @@ use Carbon\Carbon;
 
 class JobController extends Controller
 {
-    /**
-     * Display a listing of the resource.
+    /*
+     * Controlador encargado de gestionar los trabajos.
+     * Permite crear, editar, asignar y consultar trabajos realizados,
+     * así como asociar materiales, trabajadores y horas.
      */
     public function updateHour(Request $request, Job $job, WorkHour $hour)
     {
@@ -51,18 +53,18 @@ class JobController extends Controller
         $material = $movement->material;
 
         if ($difference > 0) {
-            // Se quiere usar más cantidad
+
             if ($material->quantity < $difference) {
                 return back()->withErrors(['quantity' => 'No hay suficiente cantidad disponible del material.']);
             }
             // Descontar del stock global
             $material->quantity -= $difference;
         } elseif ($difference < 0) {
-            // Se está devolviendo parte del material al stock
+
             $material->quantity += abs($difference);
         }
 
-        // Guardar cambios
+
         $material->save();
         $movement->quantity = $newQuantity;
         $movement->save();
@@ -85,7 +87,7 @@ class JobController extends Controller
     }
     public function addMaterial(Request $request, $id)
     {
-        // Buscar el trabajo
+
         $job = Job::findOrFail($id);
 
         // Validar que el material existe y que la cantidad es válida
@@ -94,7 +96,7 @@ class JobController extends Controller
             'quantity' => 'required|integer|min:1',
         ]);
 
-        // Buscar el material
+
         $material = Material::findOrFail($request->material_id);
 
         // Comprobar que hay suficiente material disponible
@@ -102,7 +104,7 @@ class JobController extends Controller
             return back()->with('error', 'No hay suficiente material disponible.');
         }
 
-        // Registrar el movimiento de stock (asignado a un trabajo)
+
         StockMovement::create([
             'material_id' => $material->id,
             'job_id' => $job->id,
@@ -112,7 +114,7 @@ class JobController extends Controller
             'user_id' => auth()->id(),
         ]);
 
-        // Actualizar la cantidad de material en la base de datos
+
         $material->quantity -= $request->quantity;
         $material->save();
 
@@ -121,12 +123,10 @@ class JobController extends Controller
     public function index()
     {
         // Obtener trabajos con estado "finalizado"
-        $jobs = Job::all();  // Aquí obtienes todos los trabajos
-
+        $jobs = Job::all();
         // Filtrar trabajos "finalizados" por más de 2 días
         $jobs = $jobs->map(function($job) {
-            if ($job->status == 'finalizado') {
-                // Si el trabajo está finalizado y su fecha de finalización es más de 2 días atrás
+            if ($job->status == 'finalizado') { // Si el trabajo está finalizado y su fecha de finalización es más de 2 días atrás
                 $endDate = Carbon::parse($job->end_date);
                 if ($endDate->diffInDays(Carbon::now()) > 2) {
                     $job->is_old = true; // Marcamos los trabajos como viejos
@@ -142,23 +142,20 @@ class JobController extends Controller
 
     public function updateStatus(Request $request, $id)
     {
-        $job = Job::findOrFail($id);  // Asegúrate de que se maneje correctamente si no se encuentra el trabajo
-        $job->status = $request->status;  // Actualiza el estado del trabajo
+        $job = Job::findOrFail($id);
+        $job->status = $request->status;
         if ($request->status === 'finalizado' && !$job->end_date) {
             $job->end_date = now();
         }
-        $job->save();  // Guarda el cambio
+        $job->save();
 
         return response()->json(['success' => true]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        $users = User::all(); // Obtener todos los usuarios
-        $categories = \App\Models\Category::all(); // Obtener todas las categorías
+        $users = User::all();
+        $categories = \App\Models\Category::all();
         return view('jobs.create', compact('users', 'categories'));
     }
 
@@ -183,20 +180,18 @@ class JobController extends Controller
         return redirect()->route('jobs.index')->with('success', 'Trabajo creado correctamente.');
     }
 
-    /**
-     * Display the specified resource.
-     */
+
     public function show(Job $job)
     {
         // Cargar todos los movimientos de stock relacionados con este trabajo
         $stockMovements = StockMovement::where('job_id', $job->id)->with('material')->get();
 
         // Cargar todos los materiales disponibles
-        $materials = Material::all();  // Esto carga todos los materiales
+        $materials = Material::all();
 
         $job->load('workHours.user'); // cargar también las horas con su usuario
 
-        // Pasamos tanto el trabajo como los materiales a la vista
+
         return view('jobs.show', compact('job', 'stockMovements', 'materials'));
     }
 

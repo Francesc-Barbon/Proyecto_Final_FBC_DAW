@@ -8,7 +8,8 @@ use App\Models\StockMovementView;
 class StockMovementController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Controlador que gestiona los movimientos de stock (entradas y salidas).
+     * Asocia materiales a trabajos, registra usos y reposiciones.
      */
 
 
